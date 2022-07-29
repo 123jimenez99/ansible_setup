@@ -1,0 +1,29 @@
+---
+- name: Installing docker
+  hosts: group
+  become: true
+
+  tasks:
+  - name: update repos
+    apt:
+      update_cache: true 
+
+  - name: Install dependencies
+    apt:
+      name: 
+        - ca-certificates
+        - curl
+        - gpg
+        - lsb-release
+      state: present
+      
+  - name: Add docker's key
+    apt_key:
+      url: https://download.docker.com/linux/debian/gpg
+      state: present
+
+  - name: Add repo
+    command: echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" 
+
+  - name: Finish adding repo
+    command: sudo tee /etc/apt/sources.list.d/docker.list > /dev/null

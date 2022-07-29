@@ -1,0 +1,17 @@
+---
+- name: Play with APT 
+  hosts: group
+  become: yes
+
+  tasks:
+  - name: Update apt's cache
+    ansible.builtin.apt:
+      update_cache: yes
+
+  - name: Remove orphan packages
+    ansible.builtin.apt:
+      autoremove: yes
+
+  - name: Clean repo's local copy
+    ansible.builtin.apt:
+      autoclean: yes
